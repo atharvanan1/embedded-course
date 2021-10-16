@@ -1,15 +1,33 @@
-# Week 1 Practical
+# Week 2 Practical
 
-* Here we will design a simple program to make the ARM core loop infinitely
 
-* You will need `arm-none-eabi-gcc` for this, which can be installed by 
-  `gcc-arm-none-eabi` package in Ubuntu 20.04. It will probably the same for
-  other versions too
+## Code organization
 
-* You will need `qemu-system-arm` for this, which will emulate your system
-  which will contain `virt` arm core. Start address for this is 0x10000. Make
-  sure we reflect that in our list.
+* Here we will design an ARM assembly program called `start.S`.
 
-* Here are all the ARM cpus supported by QEMU - 
-[Platform/ARM](https://wiki.qemu.org/Documentation/Platforms/ARM)
+### start.S
 
+Just loop infinitely at an address
+
+## Instructions
+
+### Prerequisites
+
+* You will need to setup your system using instructions in `setup` folder.
+
+* If you want to modify the program, you can modify the source files.
+To run with docker container, you'll use `./run-docker.sh`. This will launch
+another system (i.e. docker container) with all the necessary tools installed.
+
+* You can modify and interact with the code from your linux machine or docker
+container however you wish. 
+
+### Instructions for Compiling:
+
+1. Run `make`. This will compile the source code and pack it into `kernel.img` file.
+This will generate `start.o`, `kernel.elf`, and `kernel.img`. We'll use `kernel.img`
+and feed it into our machine below.
+
+2. Run `make run`. This will launch qemu with an ARM machine using `cortex-a57` cpu.
+You'll be able to see the assembly instructions that are being executed. This essentially
+starts a virtual machine which is an ARM CPU. Have fun! :)

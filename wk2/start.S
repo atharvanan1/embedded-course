@@ -1,27 +1,34 @@
+// Most of the code is borrowed from 
+// https://github.com/bztsrc/raspi3-tutorial/blob/master/02_multicorec/start.S
+
 .global Reset_Handler
 
 vector_table:
-b Reset_Handler 
+b Reset_Handler
 
-Reset_Handler:    
+Reset_Handler:
     // Set stack pointer to Reset_Handler
-    ldr r3, =Reset_Handler
-    mov sp, r3
+    mrs x1, mpidr_el1
+    and x1, x1, #3
+    cbz x1, 2f
+    // cpu id > 0, stop
+1:  wfe
+    b   1b
 
-    // Initialize bss section
-    // This section contains uninitialized global data
-    ldr r0, =_bss
-    ldr r1, =_bss_size
-    mov r4, #0
-init_bss:
-    cmp r1, #0
-    beq jump_c
-load_zero:
-    str r4, [r1], #8
-    sub r1, r1, #1
-    cmp r1, #0
-    bne load_zero 
+2:  // cpu id == 0
 
-jump_c:
-    bl main
-    b Reset_Handler
+    // set stack before our code
+    ldr x1, =Reset_Handler
+    mov sp, x1
+
+    // clear bss
+    ldr x1, =_bssDumping all the files needed for Embedded Course
+    ldr w2, =_bss_size
+3:  cbz w2, 4f
+    str xzr, [x1], #8
+    sub w2, w2, #1
+    cbnz w2, 3b
+
+    // jump to C code, should not return
+4:  bl main
+    b   1b

@@ -4,16 +4,16 @@
 all: clean kernel.img
 
 kernel.img: kernel.elf
-	arm-none-eabi-objcopy -O binary kernel.elf kernel.img
+	aarch64-elf-objcopy -O binary kernel.elf kernel.img
 
 kernel.elf: start.o linker.ld
-	arm-none-eabi-ld -nostdlib -nostartfiles start.o -T linker.ld -o kernel.elf
+	aarch64-elf-ld -nostdlib -nostartfiles start.o -T linker.ld -o kernel.elf
 
 start.o: start.S
-	arm-none-eabi-as start.S -o start.o
+	aarch64-elf-as start.S -o start.o
 
 clean:
-	rm kernel.* *.o >/dev/null 2>/dev/null || true
+	rm -rf kernel.* *.o >/dev/null 2>/dev/null || true
 
-run:
-	qemu-system-arm -M virt -kernel kernel.img -d in_asm -nographic
+run: kernel.img
+	qemu-system-aarch64 -M virt -cpu cortex-a57 -m 128M -kernel kernel.img -d in_asm -nographic

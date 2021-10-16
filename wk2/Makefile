@@ -1,24 +1,27 @@
 # Makefile for baremetal arm target
-#
+# Some aspects are borrowed from 
+# https://github.com/bztsrc/raspi3-tutorial/blob/master/02_multicorec/Makefile.gcc
 
 SRCS = $(wildcard *.c)
 OBJS = $(SRCS:.c=.o)
-CFLAGS = -Wall -O0 -ffreestanding -nostdinc -nostdlib -nostartfiles
+CFLAGS = -Wall -O2 -ffreestanding -nostdinc -nostdlib -nostartfiles
 
 all: clean kernel.img
 
-start.o: start.S
-	arm-none-eabi-gcc $(CFLAGS) -c start.S -o start.o
+kernel.img: kernel.elf
+	aarch64-elf-objcopy -O binary kernel.elf kernel.img
+
+kernel.elf: start.o linker.ld $(OBJS)
+	aarch64-elf-ld -nostdlib -nostartfiles start.o $(OBJS) -T linker.ld -o kernel.elf
 
 %.o: %.c
-	arm-none-eabi-gcc $(CFLAGS) -c $< -o $@
+	aarch64-elf-gcc $(CFLAGS) -c $< -o $@
 
-kernel.img: start.o $(OBJS)
-	arm-none-eabi-ld -nostdlib -nostartfiles start.o $(OBJS) -T linker.ld -o kernel.elf
-	arm-none-eabi-objcopy -O binary kernel.elf kernel.img
+start.o: start.S
+	aarch64-elf-as start.S -o start.o
 
 clean:
 	rm kernel.* *.o >/dev/null 2>/dev/null || true
 
 run: kernel.img
-	qemu-system-arm -M virt -m 128M -kernel kernel.img -d in_asm -nographic
+	qemu-system-aarch64 -M virt -smp 4 -cpu cortex-a57 -m 128M -kernel kernel.img -d in_asm -nographic

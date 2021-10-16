@@ -1,5 +1,4 @@
 int main(void)
 {
-	int a = 4;
-	while(1);
+    while(1);
 }
