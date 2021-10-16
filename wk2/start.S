@@ -22,7 +22,7 @@ Reset_Handler:
     mov sp, x1
 
     // clear bss
-    ldr x1, =_bssDumping all the files needed for Embedded Course
+    ldr x1, =_bss
     ldr w2, =_bss_size
 3:  cbz w2, 4f
     str xzr, [x1], #8

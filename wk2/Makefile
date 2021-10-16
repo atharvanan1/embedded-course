@@ -21,7 +21,7 @@ start.o: start.S
 	aarch64-elf-as start.S -o start.o
 
 clean:
-	rm kernel.* *.o >/dev/null 2>/dev/null || true
+	rm -rf kernel.* *.o >/dev/null 2>/dev/null || true
 
 run: kernel.img
 	qemu-system-aarch64 -M virt -smp 4 -cpu cortex-a57 -m 128M -kernel kernel.img -d in_asm -nographic
