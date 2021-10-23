@@ -9,11 +9,14 @@ sudo groupadd docker
 sudo usermod -a -G docker ${WHOAMI}
 ```
 
-Now, logout and log back in to reevaluate the group policy
+Now, restart your computer or VM, and that should reinstate the group policies.
 
 Execute the following:
 
 ```
-./build-docker.sh
 ./run-docker.sh
 ```
+
+This will download `1.5GB` of docker container. So, make sure you have that much data tariff. 
+This will also show you the status, as opposed to `build-docker.sh` script. Note that `build-docker.sh` 
+is still present and was used to build this image.

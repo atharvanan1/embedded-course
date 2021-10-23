@@ -42,7 +42,7 @@ ln -s ../cloog-* cloog
 cd ..
 mkdir aarch64-binutils
 cd aarch64-binutils
-../binutils-*/configure --prefix=/usr/ --target=aarch64-elf \
+../binutils-*/configure --prefix=/usr/local/cross-compiler --target=aarch64-elf \
 --enable-shared --enable-threads=posix --enable-libmpx --with-system-zlib --with-isl --enable-__cxa_atexit \
 --disable-libunwind-exceptions --enable-clocale=gnu --disable-libstdcxx-pch --disable-libssp --enable-plugin \
 --disable-linker-build-id --enable-lto --enable-install-libiberty --with-linker-hash-style=gnu --with-gnu-ld\
@@ -53,7 +53,7 @@ make install
 cd ..
 mkdir aarch64-gcc
 cd aarch64-gcc
-../gcc-*/configure --prefix=/usr/ --target=aarch64-elf --enable-languages=c \
+../gcc-*/configure --prefix=/usr/local/cross-compiler --target=aarch64-elf --enable-languages=c \
 --enable-shared --enable-threads=posix --enable-libmpx --with-system-zlib --with-isl --enable-__cxa_atexit \
 --disable-libunwind-exceptions --enable-clocale=gnu --disable-libstdcxx-pch --disable-libssp --enable-plugin \
 --disable-linker-build-id --enable-lto --enable-install-libiberty --with-linker-hash-style=gnu --with-gnu-ld\
