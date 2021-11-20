@@ -1,4 +1,4 @@
-# Week 2 Practical
+# Week 1 Practical
 
 
 ## Code organization
